@@ -30,8 +30,8 @@ def get_data():
 # -----------------------------
 #  Get Specific Student by ID
 # -----------------------------
-@app.get("/customer")
-def get_customer(student_id: str):
+@app.get("/student")
+def get_student(student_id: str):
 
     # DEBUG LINE
     print("Received:", student_id)
