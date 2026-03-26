@@ -4,16 +4,14 @@ import pandas as pd
 app = FastAPI()
 
 try:
-    # FIX: remove sep="\t"
+    
     df = pd.read_csv(r"C:\Users\LENOVO\Downloads\students_complete.csv")
 
-    # Optional: check if column exists before filling
     if 'gpa' in df.columns:
         df['gpa'] = df['gpa'].fillna(0)
 
     print("Data Loaded Successfully")
-    print(df.head())  # Debug check
-
+    
 except Exception as e:
     print("Error:", e)
     df = pd.DataFrame()
@@ -25,7 +23,6 @@ def home():
 @app.get("/data")
 def get_data():
     return df.to_dict(orient="records")
-
 
 # -----------------------------
 #  Get Specific Student by ID
