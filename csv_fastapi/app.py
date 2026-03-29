@@ -90,12 +90,138 @@ def get_student(student_id: str):
     else:
         return {"message": "Student not found"}
 
-# -----------------------------
-# Get All Students (DB)
-# -----------------------------
+# ------------------------
+# Get All Students From DB
+# ------------------------
 @app.get("/students")
 def get_students(db: Session = Depends(get_db)):
     students = db.query(models.Student).all()
     return students
 
+# --------------------------------
+# Get Students by Greater than Age 
+# --------------------------------
+@app.get("/students/age-greater-than/{age}")
+def get_students_age_greater(age: int):
+    result = df[df["age"] > age]
 
+    if not result.empty:
+        return result.to_dict(orient="records")
+    else:
+        return {"message": "No students found"}
+    
+# -------------------------------
+# Get Students by Lesser than Age 
+# -------------------------------
+@app.get("/students/age-lesser-than/{age}")
+def get_students_age_lesser(age: int):
+    result = df[df["age"] < age]
+
+    if not result.empty:
+        return result.to_dict(orient="records")
+    else:
+        return {"message": "No students found"}
+    
+
+# ---------------------------------------
+# Get Students by Greater than Attendance
+# ---------------------------------------
+@app.get("/students/attendance-greater-than/{attendance}")
+def get_students_attendance_greater(attendance: float):
+    result = df[df["attendance"] > attendance]
+
+    if not result.empty:
+        return result.to_dict(orient="records")
+    else:
+        return {"message": "No students found"}
+
+# --------------------------------------
+# Get Students by Lesser than Attendance
+# --------------------------------------
+@app.get("/students/attendance-lesser-than/{attendance}")
+def get_students_attendance_lesser(attendance: float):
+    result = df[df["attendance"] < attendance]
+
+    if not result.empty:
+        return result.to_dict(orient="records")
+    else:
+        return {"message": "No students found"}
+
+
+# -----------------------------------------------
+# Get Students by Greater than Scholarship Amount
+# -----------------------------------------------   
+@app.get("/students/scholarship-greater-than/{scholarship}")
+def get_students_scholarship_greater(scholarship: int):
+    result = df[df["scholarship"] > scholarship]
+
+    if not result.empty:
+        return result.to_dict(orient="records")
+    else:
+        return {"message": "No students found"}
+
+# -----------------------------------------------
+# Get Students by Lesser than Scholarship Amount
+# -----------------------------------------------
+@app.get("/students/scholarship-lesser-than/{scholarship}")
+def get_students_scholarship_lesser(scholarship: int):
+    result = df[df["scholarship"] < scholarship]
+
+    if not result.empty:
+        return result.to_dict(orient="records")
+    else:
+        return {"message": "No students found"}
+
+
+    
+# -----------------------------
+# Get Students by City  
+# -----------------------------
+@app.get("/students/city/{city}")
+def get_students_by_city(city: str):
+    result = df[df["city"].str.lower() == city.lower()]
+    return result.to_dict(orient="records")
+
+
+# -----------------------------
+# Get Students by Status 
+# -----------------------------
+@app.get("/students/status/{status}")
+def get_students_by_status(status: str):
+    result = df[df["status"] == status]
+    return result.to_dict(orient="records")
+
+
+# -----------------------------
+# Get Students by Major
+# -----------------------------
+@app.get("/students/major/{major}")
+def get_students_by_major(major: str):
+    result = df[df["major"] == major]
+    return result.to_dict(orient="records")
+
+
+# -----------------------------
+# 👉 Age > X AND GPA > Y
+# -----------------------------
+@app.get("/students/filter_greater_both_age_gpa")
+def filter_students(age: int, gpa: float):
+    result = df[(df["age"] > age) & (df["gpa"] > gpa)]
+    return result.to_dict(orient="records")
+
+
+# -----------------------------
+# 👉 Age < X AND GPA < Y
+# -----------------------------
+@app.get("/students/filter_lesser_both_age_gpa")
+def filter_students(age: int, gpa: float):
+    result = df[(df["age"] < age) & (df["gpa"] < gpa)]
+    return result.to_dict(orient="records")
+
+# -----------------------------
+# 👉 Age = X AND GPA = Y
+# -----------------------------
+@app.get("/students/filter_equal_both_age_gpa")
+def filter_students(age: int, gpa: float):
+    result = df[(df["age"] == age) & (df["gpa"] == gpa)]
+    return result.to_dict(orient="records")
