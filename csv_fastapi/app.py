@@ -1,9 +1,7 @@
 from fastapi import FastAPI, Depends
 import crud
-# import schema
 from typing import List
 from fastapi import HTTPException
-# from schema import *
 from schema import StudentCreate, StudentUpdate
 from sqlalchemy.orm import Session  
 import pandas as pd
