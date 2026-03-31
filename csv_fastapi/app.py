@@ -92,6 +92,7 @@ def get_students(db: Session = Depends(get_db)):
 # -----------------------------
 @app.get("/students-db/{student_id}")
 def get_student(student_id: str, db: Session = Depends(get_db)):
+    student_id = student_id.lower()  # Case-insensitive search
     student = crud.get_student_by_id(db, student_id)
 
     if not student:
@@ -104,6 +105,7 @@ def get_student(student_id: str, db: Session = Depends(get_db)):
 # -----------------------------
 @app.put("/students/{student_id}")
 def update_student(student_id: str, updated_data: StudentUpdate, db: Session = Depends(get_db)):
+    student_id = student_id.lower()  # Case-insensitive search
 
     student = db.query(models.Student).filter(
         models.Student.student_id == student_id
@@ -125,6 +127,7 @@ def update_student(student_id: str, updated_data: StudentUpdate, db: Session = D
 # -----------------------------
 @app.delete("/students/{student_id}")
 def delete_student(student_id: str, db: Session = Depends(get_db)):
+    student_id = student_id.lower()  # Case-insensitive search
     student = crud.delete_student(db, student_id)
 
     if not student:
@@ -132,19 +135,13 @@ def delete_student(student_id: str, db: Session = Depends(get_db)):
 
     return {"message": "Student deleted successfully"}
 
-# # ------------------------
-# # Get All Students From DB
-# # ------------------------
-# @app.get("/students", response_model=List[schema.StudentCreate])
-# def get_all_students(db: Session = Depends(get_db)):
-#     students = db.query(models.Student).all()
-#     return students
 
 # ------------------------
 # Get Student by ID from DB
 # ------------------------
 @app.get("/students/{student_id_db}")
 def get_student(student_id: str, db: Session = Depends(get_db)):
+    student_id = student_id.lower()  # Case-insensitive search
     student = db.query(models.Student).filter(
         models.Student.student_id == student_id
     ).first()
@@ -243,7 +240,7 @@ def get_students_by_city(city: str):
 # -----------------------------
 @app.get("/students/status/{status}")
 def get_students_by_status(status: str):
-    result = df[df["status"] == status]
+    result = df[df["status"].str.lower() == status.lower()]
     return result.to_dict(orient="records")
 
 
@@ -252,7 +249,7 @@ def get_students_by_status(status: str):
 # -----------------------------
 @app.get("/students/major/{major}")
 def get_students_by_major(major: str):
-    result = df[df["major"] == major]
+    result = df[df["major"].str.lower() == major.lower()]
     return result.to_dict(orient="records")
 
 
@@ -293,4 +290,3 @@ def get_students_age_equal(age: int):
         return result.to_dict(orient="records")
     else:
         return {"message": "No students found"}
-
